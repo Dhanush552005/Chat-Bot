@@ -79,7 +79,7 @@ function Chatbot() {
                         <span className="text-pink-400 text-4xl">
                             🤖
                         </span>
-                        <span>Story Answering Chatbot</span>
+                        <span>NeuroQA – Story Answering Bot</span>
                     </h1>
                     <p className="text-gray-400 mt-2 text-md">
                         Enter a short context and a Yes/No question to get a reliable answer.
