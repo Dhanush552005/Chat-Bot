@@ -1,91 +1,94 @@
-readme_content = """# 🤖 Yes/No Question Answering Chatbot (LSTM-based)
+# 🧠 NeuroQA – Story Comprehension Bot
 
-This project implements a **Deep Learning Chatbot** using **LSTM (Long Short-Term Memory)** networks that reads short stories and answers **yes/no questions** based on the story’s context.  
-It combines **natural language understanding**, **sequence modeling**, and **contextual reasoning** to mimic reading comprehension.
+## AI-Powered Contextual Question Answering (Full-Stack)
 
----
+NeuroQA is a full-stack web application designed to demonstrate contextual question answering (CQA) using a Neural Network. The application allows a user to input a multi-sentence "story" (context) and a "Yes/No" question, and the backend model determines the logical answer based on the provided narrative.
 
-## 📘 Project Overview
 
-### 🎯 Objective
-The main goal is to build an intelligent chatbot that:
-- Understands short stories written in plain English.
-- Answers context-based **yes/no** questions.
-- Learns word relationships and reasoning through sequential LSTM modeling.
+## ✨ Features
 
----
+* **Premium Frontend:** Features a high-contrast **Dark, Glassy, and Neon-Glow** UI built with React and Tailwind CSS.
+* **Dual-Encoder LSTM Model:** Utilizes a Keras/TensorFlow model specifically designed for sequence-to-sequence inference on contextual data.
+* **Full-Stack Architecture:** Separated Frontend (React/Vite) and Backend (FastAPI).
 
-## 🧩 Data Preparation
+## 🏛️ Architecture Overview
 
-### 1️⃣ Loading the Data
-- The training and test datasets are stored in:
-  - `train_qa.csv`
-  - `test_qa.csv`
-- Each file contains three columns:
+The project is split into two main directories:
 
-### 2️⃣ Cleaning
-- Originally, data was stored as Python list strings like `['Mary', 'went', 'to', 'the', 'garden']`.
-- These were cleaned into proper sentences.
-- Answers were normalized to lowercase (`yes` or `no`).
+| Directory | Technology | Role |
+| :--- | :--- | :--- |
+| `frontend/` | React (Vite) & Tailwind CSS | Handles user input, displays the prediction result, and provides the premium Neon UI. |
+| `backend/` | Python (FastAPI) & TensorFlow/Keras | Loads the trained ML model, preprocesses text, and serves predictions via a robust REST API. |
 
-### 3️⃣ Vocabulary Creation
-- Unique words from stories and questions are extracted.
-- Special tokens **“yes”** and **“no”** are also added.
-- Vocabulary size, max story length, and max question length are calculated.
 
-### 4️⃣ Tokenization and Vectorization
-- Using Keras’ `Tokenizer`, sentences are converted to integer sequences.
-- Sequences are padded to consistent lengths (`pad_sequences`).
-- Answers are encoded as binary:
-- `yes → 1`
-- `no  → 0`
 
 ---
 
-## 🧠 Model Architecture
+## ⚙️ Core ML Component Details
 
-### 🔹 Overview
-The chatbot uses **two LSTM encoders** — one for the story and one for the question — and merges their outputs for prediction.
+This section details the design and implementation of the machine learning model.
 
-### Layers
+### 🧠 Model Architecture
 
-1. **Embedding Layers**
- - Convert word indices into dense 128-dimensional vectors.
+The chatbot uses a **Dual LSTM Encoder** architecture: one encoder processes the story context, and the other processes the question. The outputs are then merged for a final prediction.
 
-2. **Dual LSTM Encoders**
- - Each input (story and question) passes through stacked LSTMs:
-   - LSTM(128, return_sequences=True)
-   - LSTM(64)
- - Captures semantic and contextual meaning.
+1.  **Embedding Layers:** Converts word indices into dense 128-dimensional vectors.
+2.  **Dual LSTM Encoders:**
+    * Each input (story and question) passes through stacked LSTMs: `LSTM(128, return_sequences=True)` followed by `LSTM(64)`.
+    * This design captures both semantic meaning and the sequential, contextual relationships within the text.
+3.  **Output Layer:** A final `Dense(1, activation='sigmoid')` layer outputs the binary prediction (1 for 'yes', 0 for 'no').
 
-3. **Concatenation Layer**
- - Combines encoded story and question representations.
+### 🛠️ Model Compilation and Training
 
-4. **Dense + Dropout Layers**
- - Dense(32, activation='relu')
- - Dropout(0.3) — prevents overfitting.
-
-5. **Output Layer**
- - Dense(1, activation='sigmoid') — outputs binary prediction:
-   - `1` → yes
-   - `0` → no
+* **Loss Function:** Binary Crossentropy
+* **Optimizer:** Adam
+* **Metrics:** Accuracy
 
 ---
 
-## ⚙️ Model Compilation and Training
+## 🛠️ Setup and Installation
 
-- **Loss Function:** Binary Crossentropy  
-- **Optimizer:** Adam  
-- **Metrics:** Accuracy  
-- **Epochs:** 50  
-- **Batch Size:** 32  
-- **Validation Split:** 20%  
+### Prerequisites
 
-Example training code:
-```python
-history = model.fit(
-  [Xtrain_story, Xtrain_ques], Ytrain,
-  validation_data=([Xval_story, Xval_ques], Yval),
-  epochs=50,
-  batch_size=32
-)
+* **Python (3.8+)**
+* **Node.js (16+) & npm**
+
+### 1. Backend Setup
+
+1.  **Navigate to the backend directory:**
+    ```bash
+    cd backend
+    ```
+2.  **Install Python dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  **Run the Backend API:**
+    ```bash
+    python app.py
+    ```
+    The API should now be running at `http://127.0.0.1:8000`.
+
+### 2. Frontend Setup
+
+1.  **Navigate to the frontend directory:**
+    ```bash
+    cd ../frontend
+    ```
+2.  **Install Node dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the Frontend Development Server:**
+    ```bash
+    npm run dev
+    ```
+    The web application should open in your browser, typically at `http://localhost:5173`.
+
+## 🚀 How to Use
+
+1.  Ensure both the **Backend API** (port 8000) and the **Frontend App** (e.g., port 5173) are running.
+2.  Input a multi-sentence **Story Context** and a **Yes/No Question**.
+3.  Click **'Execute Query Protocol'**. The model's prediction and confidence score will update instantly.
+
+---
